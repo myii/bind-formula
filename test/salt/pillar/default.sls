@@ -95,6 +95,7 @@ bind:
           '@':
             - ns1.example.com.
         PTR:
+          1: ns1.example.net.
           1.113.0.203.in-addr.arpa: ns1.example.com.
           2.113.0.203.in-addr.arpa: foo.example.com.
           3.113.0.203.in-addr.arpa: bar.example.com.

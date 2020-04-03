@@ -127,6 +127,7 @@ if zones_directory
 
       # Just match string for these as it's much easier to read
       # Match Include
+      its('content') { should match '1 PTR ns1.example.net.' }
       its('content') { should match '1.113.0.203.in-addr.arpa PTR ns1.example.com.' }
       its('content') { should match '2.113.0.203.in-addr.arpa PTR foo.example.com.' }
       its('content') { should match '3.113.0.203.in-addr.arpa PTR bar.example.com.' }
