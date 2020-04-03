@@ -236,7 +236,7 @@ zones{{ dash_view }}-{{ zone }}{{ '.include' if serial_auto else '' }}:
     - context:
         zone: zones{{ dash_view }}-{{ zone }}
         soa: {{ salt['pillar.get']("bind:available_zones:" + zone + ":soa") | json }}
-        records: {{ zone_records | json }}
+        records: {{ zone_records | yaml }}
         include: False
     {% endif %}
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
