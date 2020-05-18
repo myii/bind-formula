@@ -203,9 +203,9 @@ bind_rndc_client_config:
 
 {%- set views = {False: salt['pillar.get']('bind', {})} %}{# process non-view zones in the same loop #}
 {%- do views.update(salt['pillar.get']('bind:configured_views', {})) %}
-{%- for view, view_data in views|dictsort %}
+{%- for view, view_data in views.items()|sort %}
 {%-   set dash_view = '-' + view if view else '' %}
-{%-   for zone, zone_data in view_data.get('configured_zones', {})|dictsort -%}
+{%-   for zone, zone_data in view_data.get('configured_zones', {}).items()|sort -%}
 {%-     if 'file' in zone_data %}
 {%-       set file = zone_data.file %}
 {%-       set zone = file|replace(".txt", "") %}

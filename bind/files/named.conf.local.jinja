@@ -7,7 +7,7 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
-{% for name, data in salt['pillar.get']('bind:configured_acls', {})|dictsort %}
+{% for name, data in salt['pillar.get']('bind:configured_acls', {}).items()|sort %}
 acl {{ name }} {
   {%- for d in data %}
   {{ d }};
@@ -15,7 +15,7 @@ acl {{ name }} {
 };
 {%- endfor %}
 
-{%- for name, data in salt['pillar.get']('bind:configured_masters', {})|dictsort %}
+{%- for name, data in salt['pillar.get']('bind:configured_masters', {}).items()|sort %}
 masters {{ name }} {
   {%- for d in data %}
   {{ d }};
@@ -93,7 +93,7 @@ zone "{{ key }}" {
 include "{{ map.default_zones_config }}";
 {%- endif %}
 
-{% for key, args in salt['pillar.get']('bind:configured_zones', {})|dictsort -%}
+{% for key, args in salt['pillar.get']('bind:configured_zones', {}).items()|sort -%}
 {%- if salt['pillar.get']("bind:configured_zones:" + key + ":file") -%}
 {%- set file = salt['pillar.get']("bind:configured_zones:" + key + ":file") %}
 {% else %}
@@ -108,7 +108,7 @@ include "{{ map.default_zones_config }}";
 {{ zone(key, args, file, masters) }}
 {% endfor %}
 
-{%- for view, view_data in salt['pillar.get']('bind:configured_views', {})|dictsort %}
+{%- for view, view_data in salt['pillar.get']('bind:configured_views', {}).items()|sort %}
 
 view {{ view }} {
 {%- if view == 'default' %}
@@ -120,7 +120,7 @@ view {{ view }} {
 {%- endfor %}
     };
 
-{%- for key, args in view_data.get('configured_zones', {})|dictsort -%}
+{%- for key, args in view_data.get('configured_zones', {}).items()|sort -%}
 {%- if 'file' in args %}
 {%-   set file = args.file %}
 {%- else %}
@@ -148,7 +148,7 @@ logging {
 
 {%- if salt['pillar.get']('bind:controls', False) %}
 controls {
-    {%- for name, control in salt['pillar.get']('bind:controls')|dictsort if control.get('enabled', True) %}
+    {%- for name, control in salt['pillar.get']('bind:controls').items()|sort if control.get('enabled', True) %}
     inet {{ control.get('bind', {}).get('address', '127.0.0.1') }} port {{ control.get('bind', {}).get('port', 953) }}
     {%- if control.get('allow') %}
     allow {
@@ -170,7 +170,7 @@ controls {
 
 {%- if salt['pillar.get']('bind:statistics', False) %}
 statistics-channels {
-    {%- for name, channel in salt['pillar.get']('bind:statistics')|dictsort if channel.get('enabled', True) %}
+    {%- for name, channel in salt['pillar.get']('bind:statistics').items()|sort if channel.get('enabled', True) %}
     inet {{ channel.get('bind', {}).get('address', '127.0.0.1') }} port {{ channel.get('bind', {}).get('port', 953) }}
     {%- if channel.get('allow') %}
     allow {
